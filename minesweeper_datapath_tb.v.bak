@@ -1,0 +1,95 @@
+`timescale 1ns/1ns
+
+module minesweeper_datapath_tb();
+
+	reg clk;
+	reg  en_position, en_bombCounter, s_bombCounter; 
+	reg [2:0] s_position, s_board;
+	reg [1:0] s_readMemNext;
+	reg en_board, s_board, en_bombOrNumber, s_bombOrNumber; 
+	reg en_readMemNext, en_revealQueue, s_revealQueue;
+	reg keyCode;
+	reg [3:0]adjBombs;
+	reg [5:0] din;
+	reg [7:0] rand;
+//flags
+	wire enoughBombs, atTopEdge, atLeftEdge,atRightEdge;
+	wire atBottomEdge, queueEmpty, noSurrounding, bomb, flagged;
+	wire covered, posLast, upPressed, downPressed, rightPressed;
+	wire leftPressed, enterPressed, fPressed, nextNumberGen;
+	wire nextGameHub, nextRevealSquare, nextCheckPosition;
+	wire [7:0] position;
+	
+	/*
+	wire [5:0] board;
+	wire [1:0] readMemNext;
+	wire bombOrNumber;
+	wire [5:0]bombCounter;
+	*/
+
+	minesweeper_datapath_tb uut(
+	.clk(clk),
+	.en_position(en_position), 
+	.en_bombCounter(en_bombCounter), 
+	.s_bomb_counter(s_bombCounter), 
+	.s_position(s_position), 
+	.s_board(s_board),
+	.s_readMemNext(s_readMemNext),
+	.en_board(en_board), 
+	.s_board(s_board), 
+	.en_bombOrNumber(en_bombOrNumber), 
+	.s_bombOrNumber(s_bombOrNumber), 
+	.en_readMemNext(en_readMemNext), .en_revealQueue(en_revealQueue), 
+	.s_revealQueue(s_revealQueue),
+	.keyCode(keyCode),
+	.adjBombs(adjBombs),
+	.din(din),
+	.rand(rand),
+//flags
+	.enoughBombs(enoughBombs), 
+	.atTopEdge(atTopEdge), 
+	.atLeftEdge(atLeftEdge),
+	.atRightEdge(atRightEdge), 
+	.atBottomEdge(atBottomEdge), 
+	.queueEmpty(queueEmpty), 
+	.noSurrounding(noSurrounding), 
+	.bomb(bomb), 
+	.flagged(flagged),
+	.covered(covered), 
+	.posLast(posLast), 
+	.upPressed(upPressed), 
+	.downPressed(downPressed), 
+	.rightPressed(rightPressed), 
+	.leftPressed(leftPressed),
+	.enterPressed(enterPressed), 
+	.fPressed(fPressed), 
+	.nextNumberGen(nextNumberGen), 
+	.nextGameHub(nextGameHub), 
+	.nextRevealSquare(nextRevealSquare), 
+	.nextCheckPosition(nextCheckPosition), 
+	.position(position),
+	/*
+	.board(board),
+	.readMemNext(readMemNext),
+	.bombOrNumber(bombOrNumber),
+	.bombCounter(bombCounter)
+	*/
+	);
+	
+	always
+		#5 clk=~clk;
+	
+	initial begin
+	//set all inputs to 0
+		clk=0; en_position=0; en_bombCounter=0; s_bombCounter=0; s_position=0; s_board=0; s_readMemNext=0 ;en_board=0; s_board=0; en_bombOrNumber=0; s_bombOrNumber=0; en_readMemNext=0; en_revealQueue=0; s_revealQueue=0; keyCode=0; adjBombs=0; din=0; rand=0;
+		
+		//position
+		#10 en_position=1; s_position=0; //now pos=0
+		#10 en_position=1; s_position=1; //now pos=1;
+		#10 en_position=1; s_position=2; rand=160; //now pos=160;
+		#10 en_position=1; s_position=3; revealQueue //now pos=1;
+	
+	$stop;
+	end
+	
+	endmodule

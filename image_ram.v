@@ -1,0 +1,52 @@
+module image_ram_1r1w (
+ input CLOCK_50,
+ input VGA_CLK,
+ input we,
+ input [2:0] din,
+ input [7:0] xw,
+ input [6:0] yw,
+ input [7:0] xr,
+ input [6:0] yr,
+ output reg [2:0] dout
+ );
+
+ parameter IMAGE_FILE = "background2.mem";
+
+ wire [14:0] waddr = 160*yw + xw;
+ wire [14:0] raddr = 160*yr + xr;
+
+ reg [2:0] mem [0:19199];
+ initial $readmemh(IMAGE_FILE, mem);
+ parameter x = 6'b100000;
+ parameter y = 5'b10010;
+ 
+ 
+ always @(posedge CLOCK_50)
+	
+	if(we)begin
+	genvar i;
+
+		generate  
+		for (i= 0 ; i <= 255; i=i+1) 
+  
+		begin : populate
+		sprite_test sprite_test (
+		 .VGA_CLK (VGA_CLK),
+		 .x(x+space*(i%16)),
+		 .y(y+space*(i/16)),
+		 .xvga (xvga),
+		 .yvga (yvga),
+		 .color (colorB[i])
+		 );
+		mem[i] <= colorB[i];
+	end
+ 
+   
+  endgenerate 
+ end
+ 
+ end
+ 
+
+
+endmodule

@@ -1,0 +1,43 @@
+module system(
+	input keyCode,
+	input clk,
+	input reset
+
+);
+
+
+wire we, rstBoard;
+wire [0:5] dout, din;
+wire [7:0] random, position;
+wire [2:0] adjBombs;
+
+minesweeper_processor processor(
+	.clk(clk),
+	.reset(reset),
+	.din(din),
+	.random(random),
+	.keyCode(keyCode),
+	.adjBombs(adjBombs),
+	.position(position),
+	.dout(dout),
+	.we(we),
+	.rstBoard(rstBoard)
+);
+
+minesweeper_RAM RAM(
+	.read_addr(position),
+	.write_addr(position),
+	.din(dout),
+	.reset(rstBoard),
+	.clk(clk),
+	.we(we),
+	.dout(din),
+	.adjBombs(adjBombs)
+);
+
+lsfr4 RNG(
+	.clk(clk),
+	.q(random)
+);
+
+endmodule

@@ -1,0 +1,68 @@
+timescale `1ns/1ns
+
+module controller_tb();
+
+reg clk, reset;
+
+//flags
+reg enoughBombs, atTopEdge, atLeftEdge,atRightEdge; 
+reg atBottomEdge, queueEmpty, noSurrounding, bomb, flagged;
+reg covered, posLast, upPressed, downPressed, rightPressed;
+reg leftPressed, enterPressed, fPressed, nextNumberGen, nextGameHub;
+reg nextRevealSquare, nextCheckPosition;
+
+wire en_position, en_bombCounter, s_bombCounter;
+wire en_board, en_bombOrNumber, s_bombOrNumber, we, rstBoard;
+wire [2:0] s_position, s_board;
+wire [1:0] s_readMemNext;
+wire en_readMemNext, en_revealQueue, s_revealQueue;
+
+controller uut(
+	.clk(clk),
+	.reset(reset),
+	.enoughBombs(enoughBombs),
+	.atTopEdge(atTopEdge),
+	.atLeftEdge(atLeftEdge),
+	.atRightEdge(atRightEdge),
+	.atBottomEdge(atBottomEdge),
+	.queueEmpty(queueEmpty),
+	.noSurrounding(noSurrounding),
+	.bomb(bomb),
+	.flagged(flagged),
+	.covered(covered),
+	.posLast(posLast),
+	.upPressed(upPressed),
+	.downPressed(downPressed),
+	.rightPressed(rightPressed),
+	.leftPressed(leftPressed),
+	.enterPressed(enterPressed),
+	.fPressed(fPressed),
+	.nextNumberGen(nextNumberGen),
+	.nextGameHub(nextGameHub),
+	.nextRevealSquare(nextRevealSquare),
+	.nextCheckPosition(nextCheckPosition),
+	.en_position(en_position),
+	.en_bombCounter(en_bombCounter),
+	.s_bombCounter(s_bombCounter),
+	.en_board(en_board),
+	.en_bombOrNumber(en_bombOrNumber),
+	.s_bombOrNumber(s_bombOrNumber),
+	.we(we),
+	.rstBoard(rstBoard),
+	.s_position(s_position),
+	.s_board(s_board),
+	.s_readMemNext(s_readMemNext),
+	.en_readMemNext(en_readMemNext),
+	.en_revealQueue(en_revealQueue),
+	.s_revealQueue(s_revealQueue)
+);
+
+always
+	#5 clk=~clk;
+	
+
+initial begin
+	clk=0; reset=0;
+	#10 
+$stop
+end

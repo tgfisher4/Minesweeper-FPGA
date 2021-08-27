@@ -1,0 +1,12 @@
+`timescale 1ns/1ns
+module test();
+
+reg [3:0] a,b,c;
+reg [5:0] d;
+
+initial begin
+	a=4'b1000; b= 4'b1000; c=4'b1000; d=6'b0000;
+	#10; d={d[0], a[0]+b[0]+c[0], 2'b10};
+end
+
+endmodule

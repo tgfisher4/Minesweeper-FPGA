@@ -1,0 +1,73 @@
+`timescale 1ns/1ns
+module system_tb();
+
+reg [7:0] keyCode;
+reg clk, reset;
+
+
+
+
+system uut(
+	.keyCode(keyCode),
+	.clk(clk),
+	.reset(reset)
+);
+
+always
+	#5 clk=~clk;
+
+//check rstBoard, we, random, 
+initial begin
+	clk=0; reset=1; //to init
+	#10 reset=0; //to initializeBoard
+	
+	#10; //to getRandom
+	#10; //to bombGen
+	#10; //to updateRAM
+	#10; //to checkLastBomb
+	
+	while(uut.processor.controller.state!=8)
+		#10; //cycle through previous 4
+		
+	//to readyNumberGen
+	
+	#10; //to updateWorkspace
+	
+	#10; //to numberGen
+	#10; //to updateRAM
+	#10; //to checkLastPosition
+	while(uut.processor.controller.state!=9)
+		#10; //cycle through previous 3
+	//to readyGameHub
+	
+	#10; //to updateWorkspace
+	#10; //to gamehub
+	#10 keyCode=8'h75; //toCheckTopEdge
+	#10; //to gameHub
+	#10 keyCode=8'h6B; //toCheckLeftEdge
+	#10; //to gameHub
+	
+	#10 keyCode=8'h72; //to checkBottomEdge
+	#10; //to down
+	#10; //to gameHub, now position=16
+	
+	#10 keyCode=8'h74; //to checkRightEdge
+	#10; //to right
+	#10; //to gameHub, now position=17
+	
+	#10 keyCode=8'h2B; //to checkCovered
+	#10; //to plantFlag, now RAM[17][4]=1, numFlags=39
+	#10; //gameHub
+	
+	#10 keyCode=8'5A; //to checkFlag
+	#10; //to gameHub
+	
+	#10 keyCode=8'h2B; //to checkCovered
+	#10 //to plantFlag, now RAM[17][4]=0, numFlags=40
+	
+	#10 keyCode=8'5A; //to checkFlag
+	#10; //to checkBomb
+	
+	
+$stop
+end
